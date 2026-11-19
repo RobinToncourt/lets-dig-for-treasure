@@ -1,0 +1,26 @@
+What happens during a turn, actions, conditions, requirements, etc...
+
+Except from condition, each stage is atomic and leads to the next one.
+
+1. The player draw a card from a pile(require at least once).
+2. If the card is `Plunder`, resolve its effect.
+|- If `Radioactive Waste`, loose all the collected card except this one, got to stage 5.
+|- If `Cursed Skeleton`, player CAN activate `Loyal Dog`(if any), the `Loyal Dog` goes into the player collection and the player go to stage 3 otherwise go to stage 6.
+|- If 2nd `Worms` card, go to stage 6.
+|- If `Cursed Heritage`, select a player and place this card into their collection.
+|- If `Sleeping Gravedigger`, the player CAN see the 4 first cards of an excavation pile, they are shuffle before being replaced on the pile.
+3. The Player CAN go back to stage 1.
+4. Resolve all `Collect` cards.
+|- If `Loyal Dog`, put the card in front of the player.
+|- If `Pirate Cutlass`, another selected player pass its turn.
+|- If `Pirate Hat`, stole a card from the collection of another selected player.
+|- If `Sewer`, add this card to another selected player collection.
+|- If `Treasure Map`, take a card from the first four cards of a selected excavation pile(if `Collect`, apply effect immediately) then replace cards in desired order.
+|- If `Lich King's Crown`, remove the first five cards of the selected excavation pile if it contains a `Cursed Skeleton` go to stage 1(after all cards collected has been resolved).
+|- If `Drug Stash`, if at least five other cards collected go to stage 1(after all cards collected has been resolved).
+|- If `Antipersonnel Mine`, empty the selected excavation pile.
+5. Add all collected cards to the player collection.
+6. If an excavation pile has been emptied by the player(exception to `Antipersonnel Mine`), end of the game.
+7. Next player.
+
+End of the game, resolve all cards `End of game` effect and calculate the points.

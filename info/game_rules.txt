@@ -1,0 +1,170 @@
+================================================================================
+LET'S DIG FOR TREASURE - RÈGLE DU JEU
+================================================================================
+2-5 JOUEURS | 10-20 MINUTES | 14 ANS+
+*Déterrons des trésors !
+
+--------------------------------------------------------------------------------
+APERÇU
+--------------------------------------------------------------------------------
+Il existe des artefacts secrets, des mystères et, euh... des vers qui ne demandent qu'à être déterrés. Alors prenez votre pelle, n'oubliez pas votre petit frère et c'est parti pour la chasse au trésor !
+
+À chaque tour, vous révèlerez la carte du dessus de l'une des 3 pioches de fouille. Vous pouvez continuer à piocher autant de cartes que vous le souhaitez : certaines ont un effet spécial, tandis que d'autres vous rapportent des tonnes de points !
+
+Mais attention ! Si vous piochez la mauvaise carte, votre tour se termine et vous ne marquez RIEN ! Il faudra savoir quand vous arrêter mais aussi quand continuer à exploiter un bon filon ! Dès que l'une des pioches est vide, la partie se termine et celui qui a marqué le plus de points l'emporte !
+
+--------------------------------------------------------------------------------
+RÈGLES
+--------------------------------------------------------------------------------
+MISE EN PLACE
+Mélangez toutes les cartes, puis divisez-les en 3 pioches à peu près égales. Le joueur le plus sale sera le premier à creuser. Jouez ensuite chacun votre tour dans le sens des aiguilles d'une montre.
+
+À VOTRE TOUR
+1) Pillez la carte du dessus de n'importe quelle pioche fouille. Révélez-la pour que tout le monde puisse la voir, puis mettez-la avec les autres cartes que vous avez déterrées pendant ce tour.
+2) Vous pouvez maintenant arrêter de creuser et collecter les cartes déterrées jusqu'ici ou continuer à piller (répétez l'étape 1) !
+
+MAIS ATTENTION !
+Si vous déterrez un SQUELETTE MAUDIT ou une seconde carte VERS dans le même tour, celui-ci se termine instantanément et vous ne marquez pas de points. De plus, vous devrez défausser toutes les cartes déterrées pendant ce tour ! À vous de déterminer quand jouer la sécurité et quand croire en votre chance en continuant à creuser !
+
+COLLECTE
+Lorsque vous choisissez d'arrêter de creuser et de mettre fin à votre tour, vous collectez les cartes déterrées pendant ce tour. Placez-les simplement devant vous dans votre pile de score. Vous pouvez consulter et organiser votre pile de score à tout moment.
+
+[Illustration de partie]
+- 3 pioches de fouille au centre.
+- Joueurs autour (ex: Joueur 1 Jean-Paul, Joueur 2 Lucie, Joueur 3 Alex, Joueur 4 Hélène) avec leurs piles de score respectives.
+- Question : « Est-ce que Lucie devrait arrêter de creuser et collecter ses 6 cartes ? Ou doit-elle continuer au risque de tout perdre ? »
+
+FIN DE PARTIE
+Lorsqu'une pioche est entièrement vide, la partie se termine à la fin du tour du joueur actif. Chaque joueur additionne les points des cartes de sa pile de score. Le joueur avec le plus de points gagne ! En cas d'égalité, la victoire est partagée. Certains effets s'appliquent en fin de partie, comme indiqué sur ces cartes.
+
+--------------------------------------------------------------------------------
+TYPES DE CARTES
+--------------------------------------------------------------------------------
+De nombreuses cartes, telles que GADOUE ou OR DU PASSEUR, valent simplement le nombre de points indiqué en fin de la partie. Cependant, il existe également dans Let's Dig For Treasure 3 types d'effets spéciaux qu'il est important de distinguer :
+
+* « PILLAGE »
+  Ces cartes ont un effet spécial immédiat lorsque vous les piochez. Ce sont toutes les cartes que vous ne voulez pas voir, telles que les VERS, les SQUELETTES MAUDITS et les DÉCHETS RADIOACTIFS !
+
+* « COLLECTE »
+  Ces cartes ont un effet spécial au moment où vous les placez dans votre pile de score. L'effet n'est pas applicable au moment où vous piochez, ni si les cartes sont défaussées au lieu d'être collectées.
+
+* « FIN DE PARTIE »
+  Ces cartes ne font effet qu'en fin de partie et peuvent faire gagner des points bonus.
+
+--------------------------------------------------------------------------------
+CLARIFICATIONS ET CONSEILS
+--------------------------------------------------------------------------------
+INTERPRÉTATION LITTÉRALE
+Les cartes ont été rédigées afin que leur interprétation soit la plus littérale possible. S'il est écrit « un autre joueur », vous ne pouvez pas vous choisir vous-même. Si une carte stipule que vous « pouvez » faire une action, vous êtes libre de choisir de ne pas la faire.
+
+PILE DE SCORE
+Pour conserver le rythme du jeu, la règle par défaut est de ne pas permettre aux autres joueurs de voir votre pile de score (ou de connaître les scores), sauf en jouant un CHAPEAU PIRATE.
+
+ASTUCE : Si vous pensez que vous êtes en retard, vous pouvez retarder le jeu en creusant dans les piles plus hautes !
+
+ASTUCE : Chaque fois que vous déterrez une carte, vous avez : 25% de chances de piocher des VERS - 10% de chances de piocher un SQUELETTE MAUDIT ou des DÉCHETS RADIOACTIFS.
+
+--------------------------------------------------------------------------------
+FAQ DES CARTES
+--------------------------------------------------------------------------------
+* COOKIES AU GINGEMBRE DE MAMIE GRUPPO / LAIT DU VIEUX MURRAY
+  Si vous avez au moins une carte LAIT et une carte COOKIES, elles valent chacune 5 points, soit 10 points pour la paire. Une carte déjà associée ne peut pas servir à former une autre paire.
+
+* COURONNE DU SEIGNEUR LICHE / PLANQUE DE DROGUE
+  Il est possible de jouer plus de 2 tours consécutifs soit en gagnant 2 de ces cartes dans le même tour, soit en gagnant une de ces cartes durant votre tour supplémentaire. Pour résumer, les tours supplémentaires qui vous sont dus s'accumulent !
+
+* HÉRITAGE MAUDIT
+  Déterrer cette carte signifie que vous devez choisir un autre joueur pour l'aider en lui offrant 10 points supplémentaires !
+
+* CHIEN FIDÈLE
+  Que vous ayez utilisé ou non sa capacité pour annuler un SQUELETTE MAUDIT, votre CHIEN FIDÈLE vous rapporte 5 points en fin de partie. Le CHIEN FIDÈLE protège uniquement contre les cartes SQUELETTE MAUDIT.
+
+* CARTE AU TRÉSOR
+  Si vous choisissez une carte « COLLECTE » grâce à l'effet d'une CARTE AU TRÉSOR, vous devez en appliquer l'effet immédiatement comme si vous l'aviez collectée.
+
+* CHAPEAU DE PIRATE
+  « Voler » une carte est différent de la piocher ou de la collecter ! Les effets des cartes qui contiennent « PILLAGE » et « COLLECTE » ne s'appliquent pas lorsqu'une carte est « volée ». Cherchez plutôt des cartes qui rapportent beaucoup de points !
+
+* TICKET DE LOTO
+  Pour marquer 50 points, cette carte doit être collectée lors du tout dernier tour de la partie. C'est donc au joueur qui a pioché le TICKET DE LOTO de terminer la partie en vidant l'une des pioches, tout en collectant cette carte !
+
+* MINE ANTIPERSONNEL
+  Cette carte peut faire durer la partie si elle est utilisée pour détruire la plus petite pioche. Si vous voulez faire une partie plus rapide, vous pouvez retirer cette carte avant de commencer.
+
+--------------------------------------------------------------------------------
+VARIANTE EN ÉQUIPE
+--------------------------------------------------------------------------------
+Les règles du jeu en équipe sont exactement les mêmes sauf pour les points indiqués ci-dessous :
+
+(1) Souvenez-vous de toujours interpréter les cartes littéralement, comme mentionné plus tôt, certaines cartes peuvent être utilisées de différentes manières !
+
+(2) Vous devez toujours vous asseoir en diagonale de votre coéquipier, afin que les équipes alternent leurs tours.
+
+(3) Vous partagez une seule pile de score avec votre partenaire ! Cela a des conséquences sur le score. Par exemple, les cartes LAIT et COOKIES collectées par les 2 joueurs d'une même équipe peuvent être associées en fin de partie.
+
+(4) CARTE AU TRÉSOR, FOSSOYEUR ASSOUPI, etc. : vous pouvez toujours communiquer avec votre coéquipier, mais faites attention à ne pas divulguer trop d'informations à l'autre équipe !
+
+--------------------------------------------------------------------------------
+LISTE DES 120 CARTES
+--------------------------------------------------------------------------------
+- 25 x Gadoue
+- 30 x Vers
+- 10 x Squelette maudit
+- 7 x Or du passeur
+- 7 x Cookies de mamie Gruppo
+- 7 x Lait du vieux Murray
+- 3 x Égout
+- 3 x Alliance
+- 3 x Fossoyeur assoupli
+- 3 x Chien fidèle
+- 3 x Carte au trésor
+- 3 x Couronne du seigneur liche
+- 3 x Héritage maudit
+- 1 x Déchets radioactifs
+- 1 x Coffre au trésor
+- 1 x Or du leprechaun
+- 1 x Arche d'alliance
+- 1 x Chapeau de pirate
+- 1 x Sabre pirate
+- 1 x Petit nouveau
+- 1 x Jeux de société
+- 1 x Ticket de loto
+- 1 x Skwrrmz, dieu des Vers
+- 1 x Robe de mariée
+- 1 x Mine antipersonnel
+- 1 x Planque de drogue
+
+--------------------------------------------------------------------------------
+CRÉDITS & MENTIONS LÉGALES
+--------------------------------------------------------------------------------
+Auteur : Ben Stoll
+Graphisme : Larry Renac
+Édition : Shahriar Fouladi
+Testeurs : Brenda Gutierrez, Kimberly Meza, Cory Jones, Holiday Jones
+
+CRYPTOZOIC ENTERTAINMENT
+- Président et fondateur : John Sepenuk
+- Fondateur : John Nee
+- Fondateur : Cory Jones
+- Directeur, développement produit : Eric Moss
+- Directeur des opérations : Ming Wan
+- Remerciements : Rumi Asai, Amanda Barker, Javier Casillas, Matt Hoffman, Jason Lim, Joshua Moran, Hudson Mullar, Sophia Shimamura, Shane Smith, John Vineyard, MaryCarmen Wilber.
+
+DON'T PANIC GAMES (www.dontpanicgames.com)
+- Président : Cedric Littardi
+- Directeur éditorial : Sébastien Rost
+- Chef de projet : Paul Malairan
+- Correction : Mélissa Veludo
+- Fabrication : Nicolas Aubry
+- Communication : Julie Delattre
+
+Réseaux sociaux :
+- Facebook : dontpanicgames
+- X (Twitter) : @DontPanicGames1
+- Instagram : @dontpanicgames
+- YouTube : @DontPanicGames
+
+Recyclage (FR) :
+- Donnez ou recyclez : Association, Magasin ou Déchèterie (Adresses sur quefairedemesdechets.fr).
+
+© 2024 Steven Rhodes. © 2024 Cryptozoic Entertainment. Version française © 2024 Don't Panic Games
