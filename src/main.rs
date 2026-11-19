@@ -21,17 +21,42 @@ fn main() {
 }
 
 enum MainMenuMessage {
-    SetNickname(String),
-    SetLobbyName(String),
-    SetSignalingServerUrl(String),
+    SetNickname(AttrValue),
+    SetLobbyName(AttrValue),
+    SetSignalingServerUrl(AttrValue),
     Join,
 }
 
-#[derive(Default)]
+#[cfg_attr(debug_assertions, derive(Debug))]
 struct MainMenu {
-    nickname: String,
-    lobby_name: String,
-    signaling_server_url: String,
+    nickname: AttrValue,
+    lobby_name: AttrValue,
+    signaling_server_url: AttrValue,
+}
+impl Default for MainMenu {
+    fn default() -> Self {
+        Self {
+            nickname: AttrValue::default(),
+            lobby_name: AttrValue::default(),
+            signaling_server_url: AttrValue::Static(
+                "wss://web-socket-signaling-server.onrender.com/<lobby_name>",
+            ),
+        }
+    }
+}
+impl Display for MainMenuMessage {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                Self::SetNickname(_) => "MainMenuMessage::SetNickname",
+                Self::SetLobbyName(_) => "MainMenuMessage::SetLobbyName",
+                Self::SetSignalingServerUrl(_) => "MainMenuMessage::SetSignalingServerUrl",
+                Self::Join => "MainMenuMessage::Join",
+            }
+        )
+    }
 }
 
 enum Message {
@@ -42,7 +67,9 @@ impl From<MainMenuMessage> for Message {
         Message::MainMenu(value)
     }
 }
+// TODO: create and use macro if more `Message` variants.
 
+#[cfg_attr(debug_assertions, derive(Debug))]
 enum App {
     MainMenu(MainMenu),
 }
@@ -58,7 +85,7 @@ impl Display for App {
             "{}",
             match self {
                 Self::MainMenu(_) => {
-                    "MainMenu"
+                    "App::MainMenu"
                 }
             }
         )
@@ -75,14 +102,12 @@ impl Component for App {
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match (self, msg) {
-            (Self::MainMenu(main_menu), Message::MainMenu(message)) => {
-                match message {
-                    MainMenuMessage::SetNickname(n) => main_menu.nickname = n,
-                    MainMenuMessage::SetLobbyName(l) => main_menu.lobby_name = l,
-                    MainMenuMessage::SetSignalingServerUrl(s) => main_menu.signaling_server_url = s,
-                    MainMenuMessage::Join => debug!("JOIN"),
-                }
-            }
+            (Self::MainMenu(main_menu), Message::MainMenu(message)) => match message {
+                MainMenuMessage::SetNickname(n) => main_menu.nickname = n,
+                MainMenuMessage::SetLobbyName(l) => main_menu.lobby_name = l,
+                MainMenuMessage::SetSignalingServerUrl(s) => main_menu.signaling_server_url = s,
+                MainMenuMessage::Join => debug!("JOIN"),
+            },
             (app_state, msg) => debug!("Message ignored."),
         }
         false
@@ -108,47 +133,41 @@ impl Component for App {
                 let is_join_disable = false;
 
                 html! {
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th>{"Nickname: "}</th>
-                                <td>
-                                    <TextInput
-                                        on_change={on_nickname_change}
-                                        value={nickname.clone()}
-                                    />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>{"Lobby name: "}</th>
-                                <td>
-                                    <TextInput
-                                        on_change={on_lobby_name_change}
-                                        value={lobby_name.clone()}
-                                    />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>{"Signaling server URL: "}</th>
-                                <td>
-                                    <TextInput
-                                        on_change={on_signaling_server_url_change}
-                                        value={nickname.clone()}
-                                    />
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <td colspan="2">
-                                <button
-                                    onclick={onclick_join}
-                                    disabled={is_join_disable}
-                                >
-                                    {"Join"}
-                                </button>
-                            </td>
-                        </tfoot>
-                    </table>
+                    <div class="menu-box">
+                        <div class="fields-grid">
+                            <label for="nickname">{"Nickname"}</label>
+                            <TextInput
+                                id="nickname"
+                                name="nickname"
+                                on_change={on_nickname_change}
+                                value={nickname}
+                            />
+
+                            <label for="lobby">{"Lobby Name"}</label>
+                            <TextInput
+                                id="lobby"
+                                name="lobby"
+                                on_change={on_lobby_name_change}
+                                value={lobby_name}
+                            />
+
+                            <label for="signaling">{"Signaling Server URL"}</label>
+                            <TextInput
+                                id="signaling"
+                                name="signaling"
+                                on_change={on_signaling_server_url_change}
+                                value={signaling_server_url}
+                            />
+                        </div>
+
+                        <button
+                            class="join-btn"
+                            onclick={onclick_join}
+                            disabled={is_join_disable}
+                        >
+                            {"Join"}
+                        </button>
+                    </div>
                 }
             }
         }

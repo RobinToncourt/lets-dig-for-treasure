@@ -1,0 +1,58 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /* Centers the form horizontally and vertically on the screen */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: sans-serif;
+    background-color: #ffffff;
+}
+
+.menu-box {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #000000;
+    padding: 2rem 2.5rem 0 2.5rem; /* No bottom padding; button handles spacing */
+}
+
+.fields-grid {
+    display: grid;
+    /* Left column fits the longest label, right column takes remaining space */
+    grid-template-columns: max-content 220px;
+    gap: 1.25rem 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.fields-grid label {
+    text-align: right;
+    max-width: 110px; /* Forces multi-word labels to wrap like in your sketch */
+    line-height: 1.2;
+}
+
+.fields-grid input {
+    width: 100%;
+    padding: 0.4rem;
+    border: 1.5px solid #000000;
+    outline: none;
+}
+
+.join-btn {
+    padding: 0.4rem 1.2rem;
+    border: 1.5px solid #000000;
+    cursor: pointer;
+
+    /* Background matches the page so it masks the border behind it */
+    background-color: #ffffff;
+
+    /* Pulls the button down so its center sits right over the bottom border */
+    transform: translateY(50%);
+}

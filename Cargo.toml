@@ -6,6 +6,7 @@ edition = "2024"
 [dependencies]
 # GUI.
 yew = { version = "0.23", features = ["csr"] }
+yew-autoprops = "0.5"
 
 # WebRtcSocket.
 matchbox_socket = "0.15"
