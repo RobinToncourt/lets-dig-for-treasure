@@ -1,0 +1,173 @@
+mod card;
+
+use rand::prelude::*;
+
+use card::Card;
+
+enum PlayerNumberError {
+    /// The game requires at least two(2) players.
+    NotEnoughPlayers,
+    /// The game allow to five(5) players max.
+    TooManyPlayers,
+}
+
+struct PlayerNames(Vec<String>);
+impl PlayerNames {
+    fn new(player_names: Vec<String>) -> Result<Self, PlayerNumberError> {
+        if player_names.len() < 2 {
+            Err(PlayerNumberError::NotEnoughPlayers)
+        } else if player_names.len() > 5 {
+            Err(PlayerNumberError::TooManyPlayers)
+        } else {
+            Ok(Self(player_names))
+        }
+    }
+}
+
+enum ExcavationPileNumber {
+    One,
+    Two,
+    Three,
+}
+impl From<usize> for ExcavationPileNumber {
+    fn from(number: usize) -> Self {
+        match number {
+            0 => ExcavationPileNumber::One,
+            1 => ExcavationPileNumber::Two,
+            2 => ExcavationPileNumber::Three,
+            // It is not right to panic
+            _ => unreachable!(),
+        }
+    }
+}
+
+/*
+ * Player actions.
+ */
+
+enum DrawingPlayerAction {
+    /// The player draw a card from an excavation pile.
+    // Should it take a &ExcavationPile to not have to check for emptiness ?
+    DrawCard(ExcavationPileNumber),
+    /// Select a player by name.
+    // What if two players have the same name ? I also need to check if the player name exists.
+    // Should it take a &Player ?
+    SelectPlayer(String),
+    /// The player decision on using the dog protection.
+    UseDog(bool),
+    /// The player chooses to end its turn and add the cards to its collection.
+    CollectCards,
+}
+
+/// Represents the different actions the player can do.
+enum PlayerAction {
+    Draw(DrawingPlayerAction),
+    Collect(),
+}
+
+/*
+ * Game stage.
+ */
+
+enum DrawingStage {
+    /// The game requires the player to draw at this stage.
+    FirstDrawCard,
+    /// The player can draw.
+    DrawCard,
+    /// The player has to select another player.
+    SelectAnotherPlayer,
+    /// The player has to choose to use a dog.
+    UseDog,
+}
+
+enum CollectStage {
+    SelectAnotherPlayer,
+    SelectAPile(ExcavationPileNumber),
+    UseCard(bool),
+}
+
+/// Indicate in which stage the game and is waiting for a `PlayerAction` to advance.
+enum GameStage {
+    /// The drawing stage.
+    Drawing(DrawingStage),
+    /// The cards are added to the active player collection.
+    CollectCards(CollectStage),
+    /// The game is over.
+    GameOver,
+}
+
+/*
+ * Outcome and errors.
+ */
+
+enum Outcome {
+    ExcavationPileIsEmpty(ExcavationPileNumber),
+    NextPlayer,
+}
+
+/*
+ * Expected behavior
+ */
+
+/// Methods to interact with the game.
+trait LetsDigForTreasure: Sized {
+    /// Create a new game.
+    fn new<R: Rng + ?Sized>(rng: &mut R, player_names: PlayerNames) -> Self;
+
+    /// Returns the excavation piles remaining.
+    // Should `LetsDigForTreasure::do_player_action` returns this after each move instead ?
+    fn get_remaining_excavation_pile_numbers(&self) -> impl Iterator<Item = ExcavationPileNumber>;
+
+    // TODO: fine grain output.
+    fn do_player_action(&mut self, action: PlayerAction) -> Result<(), ()>;
+}
+
+/*
+ * Game implementation.
+ */
+
+struct Player {
+    name: String,
+    /// The cards collected by the player.
+    collection: Vec<Card>,
+    /// The number of `Loyal Dog`s that protect the player from `Cursed Skeleton`.
+    loyal_dogs: Vec<Card>,
+}
+impl Player {
+    fn new(name: String) -> Self {
+        Self {
+            name,
+            collection: vec![],
+            loyal_dogs: vec![],
+        }
+    }
+}
+
+type ExcavationPile = Vec<Card>;
+
+struct Game {
+    players: Vec<Player>,
+    excavation_piles: [ExcavationPile; 3],
+}
+impl LetsDigForTreasure for Game {
+    fn new<R: Rng + ?Sized>(rng: &mut R, player_names: PlayerNames) -> Self {
+        // TODO: create the deck, shuffle and split in 3.
+        // TODO: add randomization to the splitting so each pile is of different size
+        // todo: but close to same size.
+        let players: Vec<Player> = player_names.0.into_iter().map(Player::new).collect();
+        todo!()
+    }
+    fn get_remaining_excavation_pile_numbers(&self) -> impl Iterator<Item = ExcavationPileNumber> {
+        // Should I iter on ExcavationPileNumber and index the excavation_piles ?
+        // That would just move the problem to the indexing.
+        // Maybe create a type ?
+        self.excavation_piles
+            .iter()
+            .enumerate()
+            .filter(|(i, ep)| !ep.is_empty())
+            .map(|(i, _)| i.into())
+    }
+    fn do_player_action(&mut self, action: PlayerAction) -> Result<(), ()> {
+        todo!()
+    }
+}
