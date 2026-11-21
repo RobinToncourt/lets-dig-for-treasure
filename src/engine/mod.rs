@@ -1,4 +1,14 @@
-mod card;
+pub mod card;
+mod game;
+
+/*
+ * Exports.
+ */
+pub use game::Game;
+
+/*
+ * Imports.
+ */
 
 use rand::prelude::*;
 
@@ -59,10 +69,12 @@ enum DrawingPlayerAction {
     CollectCards,
 }
 
+enum CollectPlayerAction {}
+
 /// Represents the different actions the player can do.
 enum PlayerAction {
     Draw(DrawingPlayerAction),
-    Collect(),
+    Collect(CollectPlayerAction),
 }
 
 /*
@@ -81,9 +93,12 @@ enum DrawingStage {
 }
 
 enum CollectStage {
+    /// The player has to select another player.
     SelectAnotherPlayer,
-    SelectAPile(ExcavationPileNumber),
-    UseCard(bool),
+    /// The player has to choose a pile.
+    SelectAPile,
+    /// The player tells if he wants to use the card.
+    UseCard,
 }
 
 /// Indicate in which stage the game and is waiting for a `PlayerAction` to advance.
@@ -100,13 +115,17 @@ enum GameStage {
  * Outcome and errors.
  */
 
-enum Outcome {
+type LetsDigForTreasureResult = Result<LetsDigForTreasureOutcome, LetsDigForTreasureError>;
+
+enum LetsDigForTreasureOutcome {
     ExcavationPileIsEmpty(ExcavationPileNumber),
     NextPlayer,
 }
 
+enum LetsDigForTreasureError {}
+
 /*
- * Expected behavior
+ * Expected behavior.
  */
 
 /// Methods to interact with the game.
@@ -119,14 +138,14 @@ trait LetsDigForTreasure: Sized {
     fn get_remaining_excavation_pile_numbers(&self) -> impl Iterator<Item = ExcavationPileNumber>;
 
     // TODO: fine grain output.
-    fn do_player_action(&mut self, action: PlayerAction) -> Result<(), ()>;
+    fn do_player_action(&mut self, action: PlayerAction) -> LetsDigForTreasureResult;
 }
 
 /*
  * Game implementation.
  */
 
-struct Player {
+pub struct Player {
     name: String,
     /// The cards collected by the player.
     collection: Vec<Card>,
@@ -144,30 +163,3 @@ impl Player {
 }
 
 type ExcavationPile = Vec<Card>;
-
-struct Game {
-    players: Vec<Player>,
-    excavation_piles: [ExcavationPile; 3],
-}
-impl LetsDigForTreasure for Game {
-    fn new<R: Rng + ?Sized>(rng: &mut R, player_names: PlayerNames) -> Self {
-        // TODO: create the deck, shuffle and split in 3.
-        // TODO: add randomization to the splitting so each pile is of different size
-        // todo: but close to same size.
-        let players: Vec<Player> = player_names.0.into_iter().map(Player::new).collect();
-        todo!()
-    }
-    fn get_remaining_excavation_pile_numbers(&self) -> impl Iterator<Item = ExcavationPileNumber> {
-        // Should I iter on ExcavationPileNumber and index the excavation_piles ?
-        // That would just move the problem to the indexing.
-        // Maybe create a type ?
-        self.excavation_piles
-            .iter()
-            .enumerate()
-            .filter(|(i, ep)| !ep.is_empty())
-            .map(|(i, _)| i.into())
-    }
-    fn do_player_action(&mut self, action: PlayerAction) -> Result<(), ()> {
-        todo!()
-    }
-}

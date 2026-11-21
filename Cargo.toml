@@ -17,6 +17,10 @@ rand = "0.10.3"
 # Not use directly, this is to enable a feature required for WASM build.
 getrandom = { version = "0.4", features = ["wasm_js"] }
 
+# Use to deserialize.
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
 # WASM related crates.
 wasm-bindgen = "0.2"
 web-sys = { version = "0.3", features = ["Event", "EventTarget", "InputEvent"] }
@@ -25,3 +29,8 @@ web-sys = { version = "0.3", features = ["Event", "EventTarget", "InputEvent"] }
 console_error_panic_hook = "0.1.7"
 log = { version = "0.4", default-features = false }
 wasm-logger = "0.2"
+
+[build-dependencies]
+# Used to generate cards metadata array.
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

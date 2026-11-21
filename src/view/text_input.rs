@@ -22,10 +22,8 @@ use log::debug;
 #[autoprops]
 #[component]
 pub fn TextInput(
-    #[prop_or_default]
-    id: AttrValue,
-    #[prop_or_default]
-    name: AttrValue,
+    #[prop_or_default] id: AttrValue,
+    #[prop_or_default] name: AttrValue,
     value: AttrValue,
     on_change: Callback<AttrValue>,
 ) -> Html {

@@ -1,4 +1,22 @@
-enum Plunder {
+pub static CARDS_METADATA: &[CardMetadata] =
+    &include!(concat!(env!("OUT_DIR"), "/card_metadata.rs"));
+
+pub static TEST: usize = 8;
+
+#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, Copy, PartialEq)]
+pub enum Treasure {
+    Mud,
+    FerrymansGold,
+    WeddingRing,
+    TreasureChest,
+    LeprechaunGold,
+    ArkOfTheCovenant,
+}
+
+#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, Copy, PartialEq)]
+pub enum Plunder {
     CursedSkeleton,
     RadioactiveWaste,
     Worm,
@@ -7,13 +25,17 @@ enum Plunder {
 }
 
 /// If added to the player collection, it will protect from one(1) `Cursed Skeleton`.
-enum LoyalDog {
+#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, Copy, PartialEq)]
+pub enum LoyalDog {
     GermanShepherd,
     GoldenRetriever,
     JackRusselTerrier,
 }
 
-enum Collect {
+#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, Copy, PartialEq)]
+pub enum Collect {
     LoyalDog(LoyalDog),
     PirateCutlass,
     PirateHat,
@@ -24,7 +46,9 @@ enum Collect {
     AntipersonnelMine,
 }
 
-enum EndOfGame {
+#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, Copy, PartialEq)]
+pub enum EndOfGame {
     LotteryTicket,
     SkwirmzWormGod,
     WeddingDress,
@@ -33,9 +57,11 @@ enum EndOfGame {
 }
 
 /// Indicates the effect type of the card.
-enum CardType {
+#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Clone, Copy, PartialEq)]
+pub enum CardType {
     /// No effect, only points.
-    Treasure,
+    Treasure(Treasure),
     /// Resolve its effects on draw.
     Plunder(Plunder),
     /// Resolve its effect when adding the cards to the player collection.
@@ -44,26 +70,30 @@ enum CardType {
     EndOfGame(EndOfGame),
 }
 
-struct CardMetadata {
+#[cfg_attr(debug_assertions, derive(Debug))]
+pub struct CardMetadata {
+    card_type: CardType,
     name: &'static str,
     description: &'static str,
     /// The points given by the card when calculating the point at the end of the game.
-    value: isize,
-    card_type: CardType,
+    value: i8,
+    quantity: u8,
 }
 impl CardMetadata {
-    pub const fn new(
-        name: &'static str,
-        description: &'static str,
-        value: isize,
-        card_type: CardType,
-    ) -> Self {
-        Self {
-            name,
-            description,
-            value,
-            card_type,
-        }
+    pub fn card_type(&self) -> CardType {
+        self.card_type
+    }
+    pub fn name(&self) -> &'static str {
+        self.name
+    }
+    pub fn description(&self) -> &'static str {
+        self.description
+    }
+    pub fn value(&self) -> i8 {
+        self.value
+    }
+    pub fn quantity(&self) -> u8 {
+        self.quantity
     }
 }
 
@@ -73,26 +103,3 @@ impl CardMetadata {
 pub struct Card {
     metadata: &'static CardMetadata,
 }
-
-//
-// Cards metadata.
-//
-
-/// Used to reduce line width.
-type CM = CardMetadata;
-
-const MUD: CM = CM::new("Gadoue", "", 1, CardType::Treasure);
-const LICH_KINGS_CROWN: CM = CM::new(
-    "Couronne du Seigneur Liche",
-    "",
-    5,
-    CardType::Collect(Collect::LichKingsCrown),
-);
-const LOYAL_DOG: CM = CM::new(
-    "Chien Fidèle",
-    "Laissez-le devant vous lors de la collecte:\n\
-    Quand cette carte est devant vous, vous pouvez la placer dans votre pile de score\
-    pour ANNULER et DÉFAUSSER un SQUELETTE MAUDIT que vous venez de déterrer!",
-    5,
-    CardType::Collect(Collect::LoyalDog(LoyalDog::GoldenRetriever)),
-);

@@ -1,19 +1,25 @@
+#![allow(dead_code, unused)]
+
 mod engine;
 mod net;
 mod update;
 mod view;
 
 use std::fmt::Display;
+
 use yew::prelude::*;
 
 use log::{
-    debug, //
-    info,
+    debug,
+    info, //
 };
+
+use crate::engine::card::CARDS_METADATA;
 
 use crate::view::text_input::TextInput;
 
 fn main() {
+    engine::Game::test();
     console_error_panic_hook::set_once();
     wasm_logger::init(wasm_logger::Config::default());
     info!("Let's Dig for Treasure!");
