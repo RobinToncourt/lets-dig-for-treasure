@@ -14,9 +14,11 @@ use log::{
     info, //
 };
 
-use crate::engine::card::CARDS_METADATA;
-
-use crate::view::text_input::TextInput;
+use crate::view::{
+    card_sprite::CardSprite,
+    text_input::TextInput,
+    sprite::CARDS_SPRITES,
+};
 
 fn main() {
     engine::Game::test();
@@ -74,28 +76,45 @@ impl From<MainMenuMessage> for Message {
     }
 }
 // TODO: create and use macro if more `Message` variants.
-
-#[cfg_attr(debug_assertions, derive(Debug))]
-enum App {
-    MainMenu(MainMenu),
-}
-impl Default for App {
-    fn default() -> Self {
-        Self::MainMenu(MainMenu::default())
+impl Display for Message {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "Message::({})",
+            match self {
+                Message::MainMenu(main_menu) => main_menu,
+            }
+        )
     }
 }
-impl Display for App {
+
+#[cfg_attr(debug_assertions, derive(Debug))]
+enum State {
+    MainMenu(MainMenu),
+    SpriteList,
+}
+impl Default for State {
+    fn default() -> Self {
+        // Self::MainMenu(MainMenu::default())
+        Self::SpriteList
+    }
+}
+impl Display for State {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
             "{}",
             match self {
-                Self::MainMenu(_) => {
-                    "App::MainMenu"
-                }
+                Self::MainMenu(_) => "App::MainMenu",
+                Self::SpriteList => "App::SpriteList",
             }
         )
     }
+}
+
+#[derive(Default)]
+struct App {
+    state: State,
 }
 
 impl Component for App {
@@ -107,21 +126,24 @@ impl Component for App {
     }
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
-        match (self, msg) {
-            (Self::MainMenu(main_menu), Message::MainMenu(message)) => match message {
+        match (&mut self.state, msg) {
+            (State::MainMenu(main_menu), Message::MainMenu(message)) => match message {
                 MainMenuMessage::SetNickname(n) => main_menu.nickname = n,
                 MainMenuMessage::SetLobbyName(l) => main_menu.lobby_name = l,
                 MainMenuMessage::SetSignalingServerUrl(s) => main_menu.signaling_server_url = s,
-                MainMenuMessage::Join => debug!("JOIN"),
+                MainMenuMessage::Join => {
+                    self.state = State::SpriteList;
+                    return true;
+                }
             },
-            (app_state, msg) => debug!("Message ignored."),
+            (app_state, msg) => ignored(app_state, &msg),
         }
         false
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
-        match self {
-            Self::MainMenu(main_menu) => {
+        match &self.state {
+            State::MainMenu(main_menu) => {
                 let MainMenu {
                     nickname,
                     lobby_name,
@@ -171,11 +193,28 @@ impl Component for App {
                             onclick={onclick_join}
                             disabled={is_join_disable}
                         >
-                            {"Join"}
+                            {"Dig In !"}
                         </button>
                     </div>
                 }
             }
+            State::SpriteList => html! {
+                <>
+                    <h1>{"Sprites"}</h1>
+                    for cs in CARDS_SPRITES {
+                        <CardSprite
+                            x={cs.sprite().position.x}
+                            y={cs.sprite().position.y}
+                            w={cs.sprite().dimension.w}
+                            h={cs.sprite().dimension.h}
+                        />
+                    }
+                </>
+            }
         }
     }
+}
+
+fn ignored(state: &State, message: &Message) {
+    debug!("Ignore message({message}) in current state({state})");
 }

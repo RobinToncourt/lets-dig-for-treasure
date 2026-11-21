@@ -1,3 +1,15 @@
+:root {
+    --bg-black: #070708;
+    --panel-black: #0c0d10;
+    --horror-red: #d9232e;
+    --horror-red-bright: #ef2d3a;
+    --badge-blue: #2f6f92;
+    --badge-blue-light: #3d85ad;
+    --bone-white: #f2efe6;
+    --grave-yellow: #e3c446;
+    --muted-text: #b8bcc4;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -5,28 +17,45 @@
 }
 
 body {
-    /* Centers the form horizontally and vertically on the screen */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    font-family: sans-serif;
-    background-color: #ffffff;
+    font-family: "Trebuchet MS", "Arial Narrow", Impact, sans-serif;
+    background-color: var(--bg-black);
+    color: var(--bone-white);
 }
 
+/* Rounded red outer frame with a blue inner double-border, echoing the cover frame */
 .menu-box {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 2px solid #000000;
-    padding: 2rem 2.5rem 0 2.5rem; /* No bottom padding; button handles spacing */
+    background-color: var(--panel-black);
+    border: 8px solid var(--horror-red);
+    border-radius: 28px;
+    padding: 2.25rem 3rem 0 3rem;
+    box-shadow:
+            inset 0 0 0 8px var(--badge-blue),
+            0 12px 32px rgba(0, 0, 0, 0.85);
 }
+
+/* Subtle blue accent notch on the right edge like the cover border */
+/*.menu-box::after {*/
+/*    content: "";*/
+/*    position: absolute;*/
+/*    right: -4px;*/
+/*    bottom: 34px;*/
+/*    width: 10px;*/
+/*    height: 26px;*/
+/*    background-color: var(--badge-blue);*/
+/*    border-radius: 2px 0 0 2px;*/
+/*}*/
 
 .fields-grid {
     display: grid;
-    /* Left column fits the longest label, right column takes remaining space */
-    grid-template-columns: max-content 220px;
+    grid-template-columns: max-content 230px;
     gap: 1.25rem 1rem;
     align-items: center;
     margin-bottom: 1.5rem;
@@ -34,25 +63,75 @@ body {
 
 .fields-grid label {
     text-align: right;
-    max-width: 110px; /* Forces multi-word labels to wrap like in your sketch */
-    line-height: 1.2;
+    max-width: 115px;
+    line-height: 1.15;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--grave-yellow);
 }
 
+/* Rounded blue inputs styled like the "RÈGLE DU JEU" pill */
 .fields-grid input {
     width: 100%;
-    padding: 0.4rem;
-    border: 1.5px solid #000000;
+    padding: 0.5rem 0.9rem;
+    border: 2px solid var(--badge-blue-light);
+    border-radius: 999px;
+    background-color: var(--badge-blue);
+    color: var(--bone-white);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
     outline: none;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+.fields-grid input::placeholder {
+    color: rgba(242, 239, 230, 0.65);
+}
+
+.fields-grid input:hover {
+    background-color: var(--badge-blue-light);
+}
+
+.fields-grid input:focus {
+    background-color: var(--badge-blue-light);
+    border-color: var(--grave-yellow);
+    box-shadow: 0 0 0 3px rgba(227, 196, 70, 0.25);
+}
+
+/* Join button straddling the bottom border */
 .join-btn {
-    padding: 0.4rem 1.2rem;
-    border: 1.5px solid #000000;
+    padding: 0rem 1.2rem;
+    border: 8px solid var(--badge-blue);
+    border-radius: 999px;
     cursor: pointer;
-
-    /* Background matches the page so it masks the border behind it */
-    background-color: #ffffff;
-
-    /* Pulls the button down so its center sits right over the bottom border */
+    background-color: var(--bg-black);
+    color: var(--horror-red-bright);
+    font-family: inherit;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     transform: translateY(50%);
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.join-btn:hover:not(:disabled) {
+    background-color: var(--horror-red);
+    color: var(--bone-white);
+    transform: translateY(50%) scale(1.04);
+}
+
+.join-btn:active:not(:disabled) {
+    transform: translateY(50%) scale(0.98);
+}
+
+.join-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    border-color: var(--badge-blue);
+    color: var(--muted-text);
 }
