@@ -1,0 +1,184 @@
+[
+  {
+    "card_type": { "Treasure": "Mud" },
+    "name": "GADOUE",
+    "value": 1,
+    "description": "",
+    "quantity": 25
+  },
+  {
+    "card_type": { "Treasure": "FerrymansGold" },
+    "name": "OR DU PASSEUR",
+    "value": 5,
+    "description": "",
+    "quantity": 7
+  },
+  {
+    "card_type": { "Treasure": "WeddingRing" },
+    "name": "ALLIANCE",
+    "value": 10,
+    "description": "",
+    "quantity": 3
+  },
+  {
+    "card_type": { "Treasure": "TreasureChest" },
+    "name": "COFFRE AU TRÉSOR",
+    "value": 20,
+    "description": "",
+    "quantity": 1
+  },
+  {
+    "card_type": { "Treasure": "LeprechaunGold" },
+    "name": "OR DU LEPRECHAUN",
+    "value": 30,
+    "description": "",
+    "quantity": 1
+  },
+  {
+    "card_type": { "Treasure": "ArkOfTheCovenant" },
+    "name": "ARCHE D'ALLIANCE",
+    "value": 40,
+    "description": "",
+    "quantity": 1
+  },
+  {
+    "card_type": { "Plunder": "CursedSkeleton" },
+    "name": "SQUELETTE MAUDIT",
+    "value": 0,
+    "description": "PILLAGE : Votre tour se termine immédiatement. Défaussez toutes vos cartes déterrées pendant ce tour !",
+    "quantity": 10
+  },
+  {
+    "card_type": { "Plunder": "RadioactiveWaste" },
+    "name": "DÉCHETS RADIOACTIFS",
+    "value": -20,
+    "description": "PILLAGE : Votre tour se termine immédiatement. Défaussez toutes vos cartes déterrées pendant ce tour SAUF celle-ci qui rejoint votre pile de score !",
+    "quantity": 1
+  },
+  {
+    "card_type": { "Plunder": "Worm" },
+    "name": "VERS",
+    "value": 1,
+    "description": "PILLAGE : S'il s'agit de votre 2e carte VERS déterrée ce tour : votre tour se termine immédiatement. Défaussez toutes vos cartes déterrées pendant ce tour !",
+    "quantity": 30
+  },
+  {
+    "card_type": { "Plunder": "CursedHeritage" },
+    "name": "HÉRITAGE MAUDIT",
+    "value": 10,
+    "description": "PILLAGE : Vous DEVEZ donner cette carte à un autre joueur qui l'ajoute immédiatement à sa pile de score.",
+    "quantity": 3
+  },
+  {
+    "card_type": { "Plunder": "SleepingGravedigger" },
+    "name": "FOSSOYEUR ASSOUPI",
+    "value": 5,
+    "description": "PILLAGE : Regardez les 4 premières cartes d'une des pioches. Mélangez-les avant de les replacer sur la pioche.",
+    "quantity": 3
+  },
+  {
+    "card_type": { "Collect": { "LoyalDog": "GermanShepherd" } },
+    "name": "CHIEN FIDÈLE",
+    "value": 5,
+    "description": "LAISSEZ-LE DEVANT VOUS LORS DE LA COLLECTE : Quand cette carte est devant vous, vous pouvez la placer dans votre pile de score pour ANNULER et DÉFAUSSER un SQUELETTE MAUDIT que vous venez de déterrer !",
+    "quantity": 1
+  },
+  {
+    "card_type": { "Collect": { "LoyalDog": "GoldenRetriever" } },
+    "name": "CHIEN FIDÈLE",
+    "value": 5,
+    "description": "LAISSEZ-LE DEVANT VOUS LORS DE LA COLLECTE : Quand cette carte est devant vous, vous pouvez la placer dans votre pile de score pour ANNULER et DÉFAUSSER un SQUELETTE MAUDIT que vous venez de déterrer !",
+    "quantity": 1
+  },
+  {
+    "card_type": { "Collect": { "LoyalDog": "JackRusselTerrier" } },
+    "name": "CHIEN FIDÈLE",
+    "value": 5,
+    "description": "LAISSEZ-LE DEVANT VOUS LORS DE LA COLLECTE : Quand cette carte est devant vous, vous pouvez la placer dans votre pile de score pour ANNULER et DÉFAUSSER un SQUELETTE MAUDIT que vous venez de déterrer !",
+    "quantity": 1
+  },
+  {
+    "card_type": { "Collect": "PirateCutlass" },
+    "name": "SABRE PIRATE",
+    "value": 0,
+    "description": "COLLECTE : Choisissez un joueur et faites-lui passer son prochain tour !",
+    "quantity": 1
+  },
+  {
+    "card_type": { "Collect": "PirateHat" },
+    "name": "CHAPEAU DE PIRATE",
+    "value": 0,
+    "description": "COLLECTE : Choisissez un joueur et volez n'importe quelle carte de sa pile de score.",
+    "quantity": 1
+  },
+  {
+    "card_type": { "Collect": "Sewer" },
+    "name": "ÉGOUT",
+    "value": -10,
+    "description": "COLLECTE : Donnez cette carte à un autre joueur !",
+    "quantity": 3
+  },
+  {
+    "card_type": { "Collect": "TreasureMap" },
+    "name": "CARTE AU TRÉSOR",
+    "value": 0,
+    "description": "COLLECTE : Regardez les 4 premières cartes d'une des pioches. Collectez l'une des cartes immédiatement et replacez les autres sur la pioche dans l'ordre que vous voulez.",
+    "quantity": 3
+  },
+  {
+    "card_type": { "Collect": "LichKingsCrown" },
+    "name": "COURONNE DU SEIGNEUR LICHE",
+    "value": 5,
+    "description": "COLLECTE : Vous pouvez défausser les 5 premières cartes d'une des pioches. S'il y a au moins 1 SQUELETTE MAUDIT défaussé, jouez un tour supplémentaire.",
+    "quantity": 3
+  },
+  {
+    "card_type": { "Collect": "DrugStash" },
+    "name": "PLANQUE DE DROGUE",
+    "value": 5,
+    "description": "COLLECTE : Si vous collectez au moins 5 autres cartes que celle-ci durant cette phase, jouez un tour supplémentaire.",
+    "quantity": 1
+  },
+  {
+    "card_type": { "Collect": "AntipersonnelMine" },
+    "name": "MINE ANTIPERSONNEL",
+    "value": 5,
+    "description": "COLLECTE : Défaussez entièrement l'une des pioches. Cette action ne met pas fin à la partie.",
+    "quantity": 1
+  },
+  {
+    "card_type": { "EndOfGame": "LotteryTicket" },
+    "name": "TICKET DE LOTO",
+    "value": 0,
+    "description": "FIN DE PARTIE : Si vous collectez cette carte au tout dernier tour, elle vaut 50 points au lieu de 0.",
+    "quantity": 1
+  },
+  {
+    "card_type": { "EndOfGame": "SkwirmzWormGod" },
+    "name": "SKWIRMZ, DIEU DES VERS",
+    "value": 0,
+    "description": "FIN DE PARTIE : Vos cartes VERS valent 5 points chacune (au lieu de 1).",
+    "quantity": 1
+  },
+  {
+    "card_type": { "EndOfGame": "WeddingDress" },
+    "name": "ROBE DE MARIÉE",
+    "value": 0,
+    "description": "FIN DE PARTIE : Si vous n'avez aucune carte GADOUE dans votre pile de score, cette carte vaut 50 points au lieu de 0.",
+    "quantity": 1
+  },
+  {
+    "card_type": { "EndOfGame": "OldMurraysMilk" },
+    "name": "LAIT DU VIEUX MURRAY",
+    "value": 0,
+    "description": "FIN DE PARTIE : 5 points si associée à une carte COOKIES AU GINGEMBRE.",
+    "quantity": 7
+  },
+  {
+    "card_type": { "EndOfGame": "GrannyGruppoGingerCookie" },
+    "name": "COOKIES AU GINGEMBRE DE MAMIE GRUPPO",
+    "value": 0,
+    "description": "FIN DE PARTIE : 5 points si associée à une carte LAIT.",
+    "quantity": 7
+  }
+]

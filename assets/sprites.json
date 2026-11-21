@@ -1,0 +1,106 @@
+[
+  {
+    "card_type": { "Treasure": "Mud" },
+    "sprite": { "position": { "x": 0, "y": 0 }, "dimension": { "w": 327, "h": 451 } }
+  },
+  {
+    "card_type": { "Treasure": "FerrymansGold" },
+    "sprite": { "position": { "x": 327, "y": 0 }, "dimension": { "w": 326, "h": 457 } }
+  },
+  {
+    "card_type": { "Treasure": "WeddingRing" },
+    "sprite": { "position": { "x": 653, "y": 0 }, "dimension": { "w": 327, "h": 453 } }
+  },
+  {
+    "card_type": { "Treasure": "TreasureChest" },
+    "sprite": { "position": { "x": 980, "y": 0 }, "dimension": { "w": 325, "h": 459 } }
+  },
+  {
+    "card_type": { "Treasure": "LeprechaunGold" },
+    "sprite": { "position": { "x": 1305, "y": 0 }, "dimension": { "w": 327, "h": 459 } }
+  },
+  {
+    "card_type": { "Treasure": "ArkOfTheCovenant" },
+    "sprite": { "position": { "x": 1632, "y": 0 }, "dimension": { "w": 323, "h": 453 } }
+  },
+  {
+    "card_type": { "Plunder": "CursedSkeleton" },
+    "sprite": { "position": { "x": 1955, "y": 0 }, "dimension": { "w": 324, "h": 445 } }
+  },
+  {
+    "card_type": { "Plunder": "RadioactiveWaste" },
+    "sprite": { "position": { "x": 2279, "y": 0 }, "dimension": { "w": 327, "h": 449 } }
+  },
+  {
+    "card_type": { "Plunder": "Worm" },
+    "sprite": { "position": { "x": 2606, "y": 0 }, "dimension": { "w": 322, "h": 454 } }
+  },
+  {
+    "card_type": { "Plunder": "CursedHeritage" },
+    "sprite": { "position": { "x": 2928, "y": 0 }, "dimension": { "w": 325, "h": 456 } }
+  },
+  {
+    "card_type": { "Plunder": "SleepingGravedigger" },
+    "sprite": { "position": { "x": 3253, "y": 0 }, "dimension": { "w": 329, "h": 451 } }
+  },
+  {
+    "card_type": { "Collect": { "LoyalDog": "GermanShepherd" } },
+    "sprite": { "position": { "x": 3582, "y": 0 }, "dimension": { "w": 247, "h": 337 } }
+  },
+  {
+    "card_type": { "Collect": { "LoyalDog": "GoldenRetriever" } },
+    "sprite": { "position": { "x": 3829, "y": 0 }, "dimension": { "w": 241, "h": 338 } }
+  },
+  {
+    "card_type": { "Collect": { "LoyalDog": "JackRusselTerrier" } },
+    "sprite": { "position": { "x": 4070, "y": 0 }, "dimension": { "w": 240, "h": 341 } }
+  },
+  {
+    "card_type": { "Collect": "PirateCutlass" },
+    "sprite": { "position": { "x": 4310, "y": 0 }, "dimension": { "w": 248, "h": 344 } }
+  },
+  {
+    "card_type": { "Collect": "PirateHat" },
+    "sprite": { "position": { "x": 4558, "y": 0 }, "dimension": { "w": 247, "h": 346 } }
+  },
+  {
+    "card_type": { "Collect": "Sewer" },
+    "sprite": { "position": { "x": 4805, "y": 0 }, "dimension": { "w": 253, "h": 350 } }
+  },
+  {
+    "card_type": { "Collect": "TreasureMap" },
+    "sprite": { "position": { "x": 5058, "y": 0 }, "dimension": { "w": 248, "h": 346 } }
+  },
+  {
+    "card_type": { "Collect": "LichKingsCrown" },
+    "sprite": { "position": { "x": 5306, "y": 0 }, "dimension": { "w": 246, "h": 345 } }
+  },
+  {
+    "card_type": { "Collect": "DrugStash" },
+    "sprite": { "position": { "x": 5552, "y": 0 }, "dimension": { "w": 246, "h": 344 } }
+  },
+  {
+    "card_type": { "Collect": "AntipersonnelMine" },
+    "sprite": { "position": { "x": 5798, "y": 0 }, "dimension": { "w": 248, "h": 350 } }
+  },
+  {
+    "card_type": { "EndOfGame": "LotteryTicket" },
+    "sprite": { "position": { "x": 6046, "y": 0 }, "dimension": { "w": 237, "h": 331 } }
+  },
+  {
+    "card_type": { "EndOfGame": "SkwirmzWormGod" },
+    "sprite": { "position": { "x": 6283, "y": 0 }, "dimension": { "w": 238, "h": 337 } }
+  },
+  {
+    "card_type": { "EndOfGame": "WeddingDress" },
+    "sprite": { "position": { "x": 6521, "y": 0 }, "dimension": { "w": 237, "h": 333 } }
+  },
+  {
+    "card_type": { "EndOfGame": "OldMurraysMilk" },
+    "sprite": { "position": { "x": 6758, "y": 0 }, "dimension": { "w": 236, "h": 333 } }
+  },
+  {
+    "card_type": { "EndOfGame": "GrannyGruppoGingerCookie" },
+    "sprite": { "position": { "x": 6994, "y": 0 }, "dimension": { "w": 239, "h": 334 } }
+  }
+]
