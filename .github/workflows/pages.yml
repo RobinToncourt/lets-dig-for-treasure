@@ -34,10 +34,6 @@ jobs:
       - name: Build
         run: trunk build --release --public-url "/${{ github.event.repository.name }}/"
 
-      # Optional: makes deep links work as a SPA fallback on Pages.
-      - name: 404 fallback
-        run: cp dist/index.html dist/404.html
-
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
