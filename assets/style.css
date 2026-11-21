@@ -135,3 +135,15 @@ body {
     border-color: var(--badge-blue);
     color: var(--muted-text);
 }
+
+.sprites-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.card-sprite {
+    flex-shrink: 0;
+    overflow: hidden;
+}

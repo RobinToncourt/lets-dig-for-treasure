@@ -1,7 +1,7 @@
 use yew::prelude::*;
 use yew_autoprops::autoprops;
 
-const SPRITES_PATH: &str = "/assets/img/sprites.jpeg";
+const SPRITES_PATH: &str = "/assets/img/sprites.jpg";
 
 const SHEET_W: f64 = 7474.0;
 const SHEET_H: f64 = 459.0;

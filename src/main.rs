@@ -17,7 +17,10 @@ use log::{
 use crate::view::{
     card_sprite::CardSprite,
     text_input::TextInput,
-    sprite::CARDS_SPRITES,
+    sprite::{
+        CARD_BACK,
+        CARDS_SPRITES, //
+    },
 };
 
 fn main() {
@@ -199,8 +202,7 @@ impl Component for App {
                 }
             }
             State::SpriteList => html! {
-                <>
-                    <h1>{"Sprites"}</h1>
+                <div class="sprites-grid">
                     for cs in CARDS_SPRITES {
                         <CardSprite
                             x={cs.sprite().position.x}
@@ -209,7 +211,13 @@ impl Component for App {
                             h={cs.sprite().dimension.h}
                         />
                     }
-                </>
+                    <CardSprite
+                        x={CARD_BACK.position.x}
+                        y={CARD_BACK.position.y}
+                        w={CARD_BACK.dimension.w}
+                        h={CARD_BACK.dimension.h}
+                    />
+                </div>
             }
         }
     }
