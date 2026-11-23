@@ -3,6 +3,7 @@ pub static CARDS_METADATA: &[CardMetadata] =
 
 pub static TEST: usize = 8;
 
+#[allow(clippy::enum_variant_names)]
 #[cfg_attr(debug_assertions, derive(Debug))]
 #[derive(Clone, Copy, PartialEq)]
 pub enum Treasure {

@@ -14,6 +14,10 @@ use rand::prelude::*;
 
 use card::Card;
 
+/*
+ * Types.
+ */
+
 enum PlayerNumberError {
     /// The game requires at least two(2) players.
     NotEnoughPlayers,
@@ -34,6 +38,23 @@ impl PlayerNames {
     }
 }
 
+pub struct Player {
+    name: String,
+    /// The cards collected by the player.
+    collection: Vec<Card>,
+    /// The number of `Loyal Dog`s that protect the player from `Cursed Skeleton`.
+    loyal_dogs: Vec<Card>,
+}
+impl Player {
+    fn new(name: String) -> Self {
+        Self {
+            name,
+            collection: vec![],
+            loyal_dogs: vec![],
+        }
+    }
+}
+
 enum ExcavationPileNumber {
     One,
     Two,
@@ -49,6 +70,14 @@ impl From<usize> for ExcavationPileNumber {
             _ => unreachable!(),
         }
     }
+}
+
+type ExcavationPile = Vec<Card>;
+
+struct ExcavationPiles {
+    first: ExcavationPile,
+    second: ExcavationPile,
+    third: ExcavationPile,
 }
 
 /*
@@ -78,51 +107,19 @@ enum PlayerAction {
 }
 
 /*
- * Game stage.
- */
-
-enum DrawingStage {
-    /// The game requires the player to draw at this stage.
-    FirstDrawCard,
-    /// The player can draw.
-    DrawCard,
-    /// The player has to select another player.
-    SelectAnotherPlayer,
-    /// The player has to choose to use a dog.
-    UseDog,
-}
-
-enum CollectStage {
-    /// The player has to select another player.
-    SelectAnotherPlayer,
-    /// The player has to choose a pile.
-    SelectAPile,
-    /// The player tells if he wants to use the card.
-    UseCard,
-}
-
-/// Indicate in which stage the game and is waiting for a `PlayerAction` to advance.
-enum GameStage {
-    /// The drawing stage.
-    Drawing(DrawingStage),
-    /// The cards are added to the active player collection.
-    CollectCards(CollectStage),
-    /// The game is over.
-    GameOver,
-}
-
-/*
  * Outcome and errors.
  */
 
 type LetsDigForTreasureResult = Result<LetsDigForTreasureOutcome, LetsDigForTreasureError>;
 
 enum LetsDigForTreasureOutcome {
-    ExcavationPileIsEmpty(ExcavationPileNumber),
     NextPlayer,
 }
 
-enum LetsDigForTreasureError {}
+enum LetsDigForTreasureError {
+    ExcavationPileIsEmpty(ExcavationPileNumber),
+    GameIsOver,
+}
 
 /*
  * Expected behavior.
@@ -133,33 +130,11 @@ trait LetsDigForTreasure: Sized {
     /// Create a new game.
     fn new<R: Rng + ?Sized>(rng: &mut R, player_names: PlayerNames) -> Self;
 
+    fn get_active_player(&self) -> &Player;
+
     /// Returns the excavation piles remaining.
     // Should `LetsDigForTreasure::do_player_action` returns this after each move instead ?
     fn get_remaining_excavation_pile_numbers(&self) -> impl Iterator<Item = ExcavationPileNumber>;
 
-    // TODO: fine grain output.
     fn do_player_action(&mut self, action: PlayerAction) -> LetsDigForTreasureResult;
 }
-
-/*
- * Game implementation.
- */
-
-pub struct Player {
-    name: String,
-    /// The cards collected by the player.
-    collection: Vec<Card>,
-    /// The number of `Loyal Dog`s that protect the player from `Cursed Skeleton`.
-    loyal_dogs: Vec<Card>,
-}
-impl Player {
-    fn new(name: String) -> Self {
-        Self {
-            name,
-            collection: vec![],
-            loyal_dogs: vec![],
-        }
-    }
-}
-
-type ExcavationPile = Vec<Card>;

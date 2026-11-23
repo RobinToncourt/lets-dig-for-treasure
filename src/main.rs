@@ -1,4 +1,4 @@
-#![allow(dead_code, unused)]
+#![allow(dead_code, unused, clippy::cast_lossless)] // TODO: remove.
 
 mod engine;
 mod net;
@@ -16,11 +16,11 @@ use log::{
 
 use crate::view::{
     card_sprite::CardSprite,
-    text_input::TextInput,
     sprite::{
         CARD_BACK,
         CARDS_SPRITES, //
     },
+    text_input::TextInput,
 };
 
 fn main() {
@@ -92,15 +92,11 @@ impl Display for Message {
 }
 
 #[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Default)]
 enum State {
     MainMenu(MainMenu),
+    #[default]
     SpriteList,
-}
-impl Default for State {
-    fn default() -> Self {
-        // Self::MainMenu(MainMenu::default())
-        Self::SpriteList
-    }
 }
 impl Display for State {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -218,7 +214,7 @@ impl Component for App {
                         h={CARD_BACK.dimension.h}
                     />
                 </div>
-            }
+            },
         }
     }
 }
