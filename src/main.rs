@@ -24,7 +24,6 @@ use crate::view::{
 };
 
 fn main() {
-    engine::Game::test();
     console_error_panic_hook::set_once();
     wasm_logger::init(wasm_logger::Config::default());
     info!("Let's Dig for Treasure!");

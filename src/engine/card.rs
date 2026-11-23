@@ -98,9 +98,35 @@ impl CardMetadata {
     }
 }
 
+#[derive(PartialEq, Clone, Copy)]
+pub struct CardId(usize);
+
 // The game contains multiple instances of the same card.
-// The reference is hidden behind a struct that is not Copy so the card remains unique.
-// Is this separation interesting/useful/desirable ?
+// The reference is hidden behind a struct that is not `Copy` so the card remains unique.
 pub struct Card {
+    /// Used to uniquely identify each card.
+    id: CardId,
     metadata: &'static CardMetadata,
+}
+impl PartialEq for Card {
+    fn eq(&self, other: &Card) -> bool {
+        self.id == other.id
+    }
+}
+
+pub fn create_deck() -> Vec<Card> {
+    let mut deck = Vec::new();
+
+    let mut id = 0;
+
+    for metadata in CARDS_METADATA {
+        for _ in 0..metadata.quantity {
+            deck.push(Card {
+                id: CardId(id),
+                metadata
+            });
+        }
+    }
+
+    deck
 }
