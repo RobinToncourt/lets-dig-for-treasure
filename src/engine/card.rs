@@ -1,11 +1,15 @@
-pub static CARDS_METADATA: &[CardMetadata] =
-    &include!(concat!(env!("OUT_DIR"), "/card_metadata.rs"));
+use serde::{
+    Deserialize,
+    Serialize, //
+};
+use std::hash::Hash;
 
-pub static TEST: usize = 8;
+use log::error;
+
+static CARDS_METADATA: &[CardMetadata] = &include!(concat!(env!("OUT_DIR"), "/card_metadata.rs"));
 
 #[allow(clippy::enum_variant_names)]
-#[cfg_attr(debug_assertions, derive(Debug))]
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Treasure {
     Mud,
     FerrymansGold,
@@ -15,8 +19,7 @@ pub enum Treasure {
     ArkOfTheCovenant,
 }
 
-#[cfg_attr(debug_assertions, derive(Debug))]
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Plunder {
     CursedSkeleton,
     RadioactiveWaste,
@@ -26,16 +29,14 @@ pub enum Plunder {
 }
 
 /// If added to the player collection, it will protect from one(1) `Cursed Skeleton`.
-#[cfg_attr(debug_assertions, derive(Debug))]
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum LoyalDog {
     GermanShepherd,
     GoldenRetriever,
     JackRusselTerrier,
 }
 
-#[cfg_attr(debug_assertions, derive(Debug))]
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Collect {
     LoyalDog(LoyalDog),
     PirateCutlass,
@@ -47,8 +48,7 @@ pub enum Collect {
     AntipersonnelMine,
 }
 
-#[cfg_attr(debug_assertions, derive(Debug))]
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum EndOfGame {
     LotteryTicket,
     SkwirmzWormGod,
@@ -58,8 +58,7 @@ pub enum EndOfGame {
 }
 
 /// Indicates the effect type of the card.
-#[cfg_attr(debug_assertions, derive(Debug))]
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum CardType {
     /// No effect, only points.
     Treasure(Treasure),
@@ -71,7 +70,7 @@ pub enum CardType {
     EndOfGame(EndOfGame),
 }
 
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Debug)]
 pub struct CardMetadata {
     card_type: CardType,
     name: &'static str,
@@ -98,11 +97,12 @@ impl CardMetadata {
     }
 }
 
-#[derive(PartialEq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy, Serialize, Deserialize)]
 pub struct CardId(usize);
 
 // The game contains multiple instances of the same card.
 // The reference is hidden behind a struct that is not `Copy` so the card remains unique.
+#[derive(Debug)]
 pub struct Card {
     /// Used to uniquely identify each card.
     id: CardId,
@@ -113,20 +113,62 @@ impl PartialEq for Card {
         self.id == other.id
     }
 }
+impl Eq for Card {}
+
+#[derive(Debug, Clone, Copy)]
+pub struct CardView {
+    pub id: CardId,
+    pub metadata: &'static CardMetadata,
+}
+impl From<&Card> for CardView {
+    fn from(card: &Card) -> Self {
+        Self {
+            id: card.id,
+            metadata: card.metadata,
+        }
+    }
+}
 
 pub fn create_deck() -> Vec<Card> {
-    let mut deck = Vec::new();
+    CARDS_METADATA
+        .iter()
+        .flat_map(|m| std::iter::repeat_n(m, m.quantity as usize))
+        .enumerate()
+        .map(|(i, metadata)| Card {
+            id: CardId(i),
+            metadata,
+        })
+        .collect()
+}
 
-    let mut id = 0;
+// TODO: @FEATURE: add a deck builder to add or remove cards from the deck.
 
-    for metadata in CARDS_METADATA {
-        for _ in 0..metadata.quantity {
-            deck.push(Card {
-                id: CardId(id),
-                metadata
-            });
+#[cfg(test)]
+mod card_tests {
+    use super::*;
+
+    use std::collections::HashSet;
+
+    // Should it be public and not just for tests ?
+    impl Hash for Card {
+        fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+            self.id.hash(state);
         }
     }
 
-    deck
+    #[test]
+    fn test_120_cards_deck() {
+        assert_eq!(120, create_deck().len());
+    }
+
+    #[test]
+    fn test_cards_has_unique_id() {
+        let mut set = HashSet::new();
+        for card in create_deck() {
+            let card_id = card.id;
+            if !set.insert(card) {
+                panic!("CARD IDs duplicate: {card_id:?}");
+            }
+        }
+    }
 }

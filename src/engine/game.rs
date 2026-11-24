@@ -1,13 +1,7 @@
-use rand::prelude::*;
+use rand::Rng;
 
 use crate::engine::{
-    ExcavationPileNumber,
-    LetsDigForTreasure,
-    LetsDigForTreasureResult,
-    Player,
-    PlayerAction,
-    PlayerId,
-    PlayerNames, //
+    Action, ExcavationPileNumber, LetsDigForTreasure, PerPile, Player, PlayerId, PlayerNames,
     card::Card,
 };
 
@@ -52,8 +46,11 @@ pub struct Game {
     active_player: PlayerId,
     /// Indicates how many new turn the active player will take.
     remaining_new_turn: usize,
-    excavation_piles: [ExcavationPile; 3],
+    excavation_piles: PerPile<ExcavationPile>,
+    discard_pile: Vec<Card>,
     stage: Stage,
+
+    loto_ticket_collected_on_last_turn: bool,
 }
 // impl LetsDigForTreasure for Game {
 //     fn new<R: Rng + ?Sized>(rng: &mut R, player_names: PlayerNames) -> Self {
@@ -84,8 +81,12 @@ impl Game {
             players,
             active_player,
             remaining_new_turn: 0,
-            excavation_piles: [const { Vec::new() }; 3],
+            // TODO: create the piles.
+            excavation_piles: PerPile([const { Vec::new() }; 3]),
+            // 30 because there is 120 cards and 30 * 2 * 2 = 120, Vec growth is capacity *2.
+            discard_pile: Vec::with_capacity(30),
             stage: Stage::Drawing(DrawingStage::FirstDrawCard),
+            loto_ticket_collected_on_last_turn: false,
         }
     }
 }

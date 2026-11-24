@@ -37,7 +37,7 @@ enum MainMenuMessage {
     Join,
 }
 
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Debug)]
 struct MainMenu {
     nickname: AttrValue,
     lobby_name: AttrValue,
@@ -90,8 +90,7 @@ impl Display for Message {
     }
 }
 
-#[cfg_attr(debug_assertions, derive(Debug))]
-#[derive(Default)]
+#[derive(Debug, Default)]
 enum State {
     MainMenu(MainMenu),
     #[default]

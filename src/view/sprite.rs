@@ -1,4 +1,4 @@
-use crate::engine::card::{
+use crate::engine::{
     CardType,
     Collect,
     EndOfGame,
@@ -13,25 +13,25 @@ pub static CARD_BACK: Sprite = Sprite {
     dimension: Dimension { w: 241, h: 334 },
 };
 
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Debug)]
 pub struct Position {
     pub x: u32,
     pub y: u32,
 }
 
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Debug)]
 pub struct Dimension {
     pub w: u32,
     pub h: u32,
 }
 
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Debug)]
 pub struct Sprite {
     pub position: Position,
     pub dimension: Dimension,
 }
 
-#[cfg_attr(debug_assertions, derive(Debug))]
+#[derive(Debug)]
 pub struct CardSprite {
     card_type: CardType,
     sprite: Sprite,
