@@ -1,4 +1,6 @@
-use rand::Rng;
+use rand::{Rng, SeedableRng};
+
+use rand_chacha::ChaCha8Rng;
 
 use crate::engine::{
     Action, ExcavationPileNumber, LetsDigForTreasure, PerPile, Player, PlayerId, PlayerNames,
@@ -42,6 +44,7 @@ enum Stage {
 type ExcavationPile = Vec<Card>;
 
 pub struct Game {
+    rng: ChaCha8Rng,
     players: Vec<Player>,
     active_player: PlayerId,
     /// Indicates how many new turn the active player will take.
@@ -53,7 +56,7 @@ pub struct Game {
     loto_ticket_collected_on_last_turn: bool,
 }
 // impl LetsDigForTreasure for Game {
-//     fn new<R: Rng + ?Sized>(rng: &mut R, player_names: PlayerNames) -> Self {
+//     fn new(rng: [u8; 32], player_names: PlayerNames) -> Self {
 //         // TODO: create the deck, shuffle and split in 3.
 //         // TODO: add randomization to the splitting so each pile is of different size
 //         // todo: but close to same size.
@@ -75,9 +78,10 @@ pub struct Game {
 //     }
 // }
 impl Game {
-    pub fn new(players: Vec<Player>) -> Self {
+    pub fn new(seed: [u8; 32], players: Vec<Player>) -> Self {
         let active_player = players[0].player_id();
         Self {
+            rng: ChaCha8Rng::from_seed(seed),
             players,
             active_player,
             remaining_new_turn: 0,

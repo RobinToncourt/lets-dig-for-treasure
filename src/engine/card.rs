@@ -4,8 +4,6 @@ use serde::{
 };
 use std::hash::Hash;
 
-use log::error;
-
 static CARDS_METADATA: &[CardMetadata] = &include!(concat!(env!("OUT_DIR"), "/card_metadata.rs"));
 
 #[allow(clippy::enum_variant_names)]
@@ -114,6 +112,11 @@ impl PartialEq for Card {
     }
 }
 impl Eq for Card {}
+impl Hash for Card {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.id.hash(state);
+    }
+}
 
 #[derive(Debug, Clone, Copy)]
 pub struct CardView {
@@ -126,6 +129,17 @@ impl From<&Card> for CardView {
             id: card.id,
             metadata: card.metadata,
         }
+    }
+}
+impl PartialEq for CardView {
+    fn eq(&self, other: &CardView) -> bool {
+        self.id == other.id
+    }
+}
+impl Eq for CardView {}
+impl Hash for CardView {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.id.hash(state);
     }
 }
 
@@ -149,13 +163,6 @@ mod card_tests {
 
     use std::collections::HashSet;
 
-    // Should it be public and not just for tests ?
-    impl Hash for Card {
-        fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-            self.id.hash(state);
-        }
-    }
-
     #[test]
     fn test_120_cards_deck() {
         assert_eq!(120, create_deck().len());
@@ -166,7 +173,7 @@ mod card_tests {
         let mut set = HashSet::new();
         for card in create_deck() {
             let card_id = card.id;
-            if !set.insert(card) {
+            if !set.insert(card_id) {
                 panic!("CARD IDs duplicate: {card_id:?}");
             }
         }

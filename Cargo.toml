@@ -13,8 +13,9 @@ matchbox_socket = "0.15"
 
 # Randomness.
 rand = "0.10.3"
+rand_chacha = "0.10.0"
 
-# Not use directly, this is to enable a feature required for WASM build.
+# Not use directly, this is to enable the feature required for WASM build.
 getrandom = { version = "0.4", features = ["wasm_js"] }
 
 # Use to deserialize.

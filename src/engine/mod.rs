@@ -4,7 +4,6 @@ mod game;
 /*
  * Exports.
  */
-use std::fmt::Formatter;
 pub use card::{
     CardId,
     CardType,
@@ -21,12 +20,19 @@ pub use game::Game;
  * Imports.
  */
 
-use std::ops::{
-    Index,
-    IndexMut, //
+use std::{
+    hash::{
+        Hash,
+        Hasher, //
+    },
+    ops::{
+        Index,
+        IndexMut, //
+    },
 };
 
-use rand::Rng;
+use rand::SeedableRng;
+use rand_chacha::ChaCha8Rng;
 
 use serde::{
     Deserialize,
@@ -44,7 +50,7 @@ use crate::engine::card::{
 pub const MIN_PLAYERS: usize = 2;
 pub const MAX_PLAYERS: usize = 5;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum PlayerNumberError {
     /// The game requires at least two(2) players.
     NotEnoughPlayers,
@@ -78,7 +84,7 @@ impl PlayerNames {
     }
 }
 
-#[derive(Debug, PartialEq, Eq, Clone, Copy, Serialize, Deserialize)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash, Serialize, Deserialize)]
 pub struct PlayerId(usize);
 impl std::fmt::Display for PlayerId {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
@@ -102,6 +108,11 @@ impl PartialEq for Player {
     }
 }
 impl Eq for Player {}
+impl Hash for Player {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.id.hash(state);
+    }
+}
 impl Player {
     fn new(id: usize, name: String) -> Self {
         Self {
@@ -152,13 +163,30 @@ impl From<&Player> for PlayerView {
         }
     }
 }
+impl PartialEq for PlayerView {
+    fn eq(&self, other: &Self) -> bool {
+        self.id == other.id
+    }
+}
+impl Eq for PlayerView {}
+impl Hash for PlayerView {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.id.hash(state);
+    }
+}
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Score {
     pub player: PlayerView,
     pub cards: Vec<CardView>,
-    pub value: u16,
+    pub value: i16,
 }
+impl PartialEq for Score {
+    fn eq(&self, other: &Self) -> bool {
+        self.player == other.player
+    }
+}
+impl Eq for Score {}
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy, Serialize, Deserialize)]
 pub enum ExcavationPileNumber {
@@ -167,10 +195,10 @@ pub enum ExcavationPileNumber {
     Three = 2,
 }
 impl ExcavationPileNumber {
-    const ALL: [Self; 3] = [Self::One, Self::Two, Self::Three];
+    pub const ALL: [Self; 3] = [Self::One, Self::Two, Self::Three];
 }
 impl std::fmt::Display for ExcavationPileNumber {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
             "{}",
@@ -183,7 +211,8 @@ impl std::fmt::Display for ExcavationPileNumber {
     }
 }
 
-struct PerPile<T>([T; 3]);
+#[derive(Debug, Clone)]
+pub struct PerPile<T>([T; 3]);
 impl<T> Index<ExcavationPileNumber> for PerPile<T> {
     type Output = T;
 
@@ -196,9 +225,15 @@ impl<T> IndexMut<ExcavationPileNumber> for PerPile<T> {
         &mut self.0[index as usize]
     }
 }
+impl<T> PerPile<T> {
+    /// Iterate over the piles.
+    fn iter(&self) -> impl Iterator<Item = &T> {
+        self.0.iter()
+    }
+}
 
 /// Roughly qualify a deck size, the players should not know the exact size.
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum AmbiguousSize {
     Many,
     Several,
@@ -227,14 +262,24 @@ fn excavation_pile_to_ambiguous_size(collection: &[Card]) -> AmbiguousSize {
  */
 
 /// Represents the different actions the player can do.
-#[derive(Debug, PartialEq, Eq, Clone, Copy, Serialize, Deserialize)]
+#[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize)]
 enum Action {
+    /// Acknowledge to the game engine it can continue.
     Continue,
+    /// The excavation pile to draw from.
     Draw(ExcavationPileNumber),
+    /// The player stop digging and cash in the cards.
     StopDigging,
+    /// The other player selected.
     SelectPlayer(PlayerId),
+    /// The excavation pile on which to perform the action.
+    /// (similar to Draw but semantically different)
     SelectPile(ExcavationPileNumber),
+    /// The player selected card.
     SelectCard(CardId),
+    /// The player reordered cards.
+    OrderedCards(Vec<CardId>),
+    /// Confirm, on not, the use of a card.
     Confirm(bool),
 }
 
@@ -245,7 +290,7 @@ enum Action {
 type ActionResult = Result<Outcome, ActionError>;
 
 /// Outcome of a player action.
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Outcome {
     /// Contains the card drawn.
     CardDrawn(CardView),
@@ -253,21 +298,16 @@ pub enum Outcome {
     TurnOver {
         reason: TurnEndReason,
     },
-    GameOver {
-        /// Which emptied pile provoked the game end.
-        emptied_pile: ExcavationPileNumber,
-        /// Contain the players, theirs cards(revealed) and their score.
-        scores: Vec<Score>,
-    },
+    GameOver(GameOver),
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Prompt {
-    card_drawn: CardView,
+    source: CardView,
     request: Request,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Request {
     SelectExcavationPile,
     UseCard,
@@ -279,9 +319,23 @@ pub enum Request {
     SelectAnotherPlayer(Vec<PlayerView>),
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum TurnEndReason {
+    /// A drawn card ended the turn.
     EndingCard(CardView),
+    /// The player ended its turn.
+    PlayerCollected,
+    /// The player turn was skipped.
+    TurnSkipped,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
+pub struct GameOver {
+    /// Which emptied pile provoked the game end.
+    emptied_pile: ExcavationPileNumber,
+    /// Contain the players, theirs cards(revealed) and their score.
+    winners: Vec<Score>,
+    losers: Vec<Score>,
 }
 
 #[derive(Debug)]
@@ -323,13 +377,16 @@ impl std::fmt::Display for ActionError {
 trait LetsDigForTreasure {
     /// Create a new game.
     /// rng: used to randomize the game.
-    fn new<R: Rng + ?Sized>(rng: &mut R, player_names: PlayerNames) -> Self;
+    fn new(seed: <ChaCha8Rng as SeedableRng>::Seed, player_names: PlayerNames) -> Self;
 
     /// Return the active player.
     fn active_player(&self) -> PlayerView;
 
     /// Return the list of players.
     fn players(&self) -> Vec<PlayerView>;
+
+    /// Returns the cards of the player.
+    fn collection(&self, player: PlayerId) -> Vec<CardView>;
 
     /// Returns the excavation pile sizes.
     fn excavation_pile_sizes(&self) -> PerPile<AmbiguousSize>;
@@ -339,6 +396,9 @@ trait LetsDigForTreasure {
 
     /// Returns the cards dig out during this turn.
     fn turn_dig_out_cards(&self) -> Vec<CardView>;
+
+    /// The result of the game if it is over.
+    fn game_result(&self) -> Option<GameOver>;
 
     /// Return the action the game is waiting from the player.
     fn pending(&self) -> Option<Prompt>;
