@@ -4,6 +4,7 @@ mod game;
 /*
  * Exports.
  */
+
 pub use card::{
     CardId,
     CardType,
@@ -140,7 +141,7 @@ impl Player {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct PlayerView {
     pub id: PlayerId,
     pub name: String,
@@ -163,30 +164,18 @@ impl From<&Player> for PlayerView {
         }
     }
 }
-impl PartialEq for PlayerView {
-    fn eq(&self, other: &Self) -> bool {
-        self.id == other.id
-    }
-}
-impl Eq for PlayerView {}
 impl Hash for PlayerView {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.id.hash(state);
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Score {
     pub player: PlayerView,
     pub cards: Vec<CardView>,
     pub value: i16,
 }
-impl PartialEq for Score {
-    fn eq(&self, other: &Self) -> bool {
-        self.player == other.player
-    }
-}
-impl Eq for Score {}
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy, Serialize, Deserialize)]
 pub enum ExcavationPileNumber {
@@ -287,18 +276,48 @@ enum Action {
  * Outcomes and errors.
  */
 
-type ActionResult = Result<Outcome, ActionError>;
+type ActionResult = Result<Vec<Event>, ActionError>;
 
-/// Outcome of a player action.
+// TODO: documents events order.
+// ex: CardDrawn -> DugCardsLost -> TurnEnded -> TurnSkipped -> TurnStarted
+/// The different events that can happen from a player `Action`.
+/// Those events are to be known by all players.
+#[rustfmt::skip]
 #[derive(Debug, PartialEq, Eq, Clone)]
-pub enum Outcome {
-    /// Contains the card drawn.
-    CardDrawn(CardView),
-    Prompt(Prompt),
-    TurnOver {
-        reason: TurnEndReason,
-    },
-    GameOver(GameOver),
+pub enum Event {
+    /// The card dug from an excavation pile.
+    CardDrawn { card: CardView, pile: ExcavationPileNumber },
+    DogUsed { player: PlayerId, dog: CardView, skeleton: CardView },
+    /// Cards lost before behind collected.
+    DugCardsLost { player: PlayerId, cards: Vec<CardView> },
+    /// Cards collected by a player.
+    CardsCollected { player: PlayerId, cards: Vec<CardView> },
+    /// Cards remove from an excavation pile.
+    PileCardsDiscarded { pile: ExcavationPileNumber, cards: Vec<CardView> },
+    /// The player inspected the excavation pile.
+    PileInspected { pile: ExcavationPileNumber, player: PlayerId },
+    /// Card stolen by player A from player B.
+    CardStolen { from: PlayerId, to: PlayerId, card: CardView },
+    /// Card given by player A from player B.
+    CardGiven { from: PlayerId, to: PlayerId, card: CardView },
+    /// The player obtained a card from an excavation pile.
+    // To indicate which card the player took with "Carte au Trésor".
+    // Maybe "CardCollected" is better, but it is really close to "CardsCollected".
+    CardTaken { player: PlayerId, card: CardView, pile: ExcavationPileNumber },
+    /// Which excavation pile has been destroyed.
+    PileDestroyed(ExcavationPileNumber),
+    /// This player gained a number of turn from a card.
+    GainedTurn { player: PlayerId, from_card: CardView },
+    /// Indicate that this player next turn will be skipped.
+    TurnWillBeSkipped { originator: PlayerId, target: PlayerId },
+    /// This player turn is over with the reason.
+    TurnEnded { player: PlayerId, reason: TurnEndReason },
+    /// The player turn has been skipped.
+    TurnSkipped(PlayerId),
+    /// This player turn begins.
+    TurnStarted(PlayerId),
+    /// The game is over and will not accept `Action` anymore.
+    GameEnded,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -309,14 +328,18 @@ pub struct Prompt {
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Request {
+    /// The player has to select an excavation pile.
     SelectExcavationPile,
+    /// Ask the player if he wants to use the card.
     UseCard,
-    // They are separated to convey that in one case the player can only see
-    // and the other he can select.
+    /// The player can observe cards.
     ObserveCards(Vec<CardView>),
+    /// The player is asked to choose a card.
     SelectCard(Vec<CardView>),
+    /// The player is asked to order the cards.
     OrderCards(Vec<CardView>),
-    SelectAnotherPlayer(Vec<PlayerView>),
+    /// The player is asked to choose a player.
+    SelectPlayer(Vec<PlayerView>),
 }
 
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -325,20 +348,18 @@ pub enum TurnEndReason {
     EndingCard(CardView),
     /// The player ended its turn.
     PlayerCollected,
-    /// The player turn was skipped.
-    TurnSkipped,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct GameOver {
     /// Which emptied pile provoked the game end.
-    emptied_pile: ExcavationPileNumber,
+    pub emptied_pile: ExcavationPileNumber,
     /// Contain the players, theirs cards(revealed) and their score.
-    winners: Vec<Score>,
-    losers: Vec<Score>,
+    pub winners: Vec<Score>,
+    pub losers: Vec<Score>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum ActionError {
     /// Tried to select an empty excavation pile.
     ExcavationPileIsEmpty(ExcavationPileNumber),
@@ -348,7 +369,7 @@ enum ActionError {
     /// Can happen if the player is expected to select another player but select himself.
     CantSelectThisPlayer,
     /// The card can't be selected.
-    /// Can happen if the player is expected to take a card that he already own.
+    /// Can happen if the player chose a card he can't take.
     CantSelectThisCard,
     /// The action was unexpected compared with the game state.
     InvalidAction,
@@ -388,21 +409,18 @@ trait LetsDigForTreasure {
     /// Returns the cards of the player.
     fn collection(&self, player: PlayerId) -> Vec<CardView>;
 
-    /// Returns the excavation pile sizes.
-    fn excavation_pile_sizes(&self) -> PerPile<AmbiguousSize>;
-
-    /// Returns the last card drawn.
-    fn last_card_drawn(&self) -> Option<CardView>;
-
     /// Returns the cards dig out during this turn.
     fn turn_dig_out_cards(&self) -> Vec<CardView>;
 
-    /// The result of the game if it is over.
-    fn game_result(&self) -> Option<GameOver>;
+    /// Returns the excavation pile sizes.
+    fn excavation_pile_sizes(&self) -> PerPile<AmbiguousSize>;
 
     /// Return the action the game is waiting from the player.
     fn pending(&self) -> Option<Prompt>;
 
     /// Execute the player and advance the game accordingly.
     fn do_player_action(&mut self, action: Action) -> ActionResult;
+
+    /// The result of the game if it is over.
+    fn game_result(&self) -> Option<GameOver>;
 }

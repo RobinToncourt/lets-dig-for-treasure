@@ -52,7 +52,7 @@ pub struct Game {
     excavation_piles: PerPile<ExcavationPile>,
     discard_pile: Vec<Card>,
     stage: Stage,
-
+    turn_number: usize,
     loto_ticket_collected_on_last_turn: bool,
 }
 // impl LetsDigForTreasure for Game {
@@ -90,6 +90,7 @@ impl Game {
             // 30 because there is 120 cards and 30 * 2 * 2 = 120, Vec growth is capacity *2.
             discard_pile: Vec::with_capacity(30),
             stage: Stage::Drawing(DrawingStage::FirstDrawCard),
+            turn_number: 0,
             loto_ticket_collected_on_last_turn: false,
         }
     }
