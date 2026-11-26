@@ -1,5 +1,5 @@
 mod card;
-mod game;
+pub mod game;
 
 /*
  * Exports.
@@ -15,7 +15,6 @@ pub use card::{
     Plunder,
     Treasure, //
 };
-pub use game::Game;
 
 /*
  * Imports.
@@ -278,15 +277,15 @@ enum Action {
 
 type ActionResult = Result<Vec<Event>, ActionError>;
 
-// TODO: documents events order.
-// ex: CardDrawn -> DugCardsLost -> TurnEnded -> TurnSkipped -> TurnStarted
 /// The different events that can happen from a player `Action`.
 /// Those events are to be known by all players.
+/// ex: `CardDrawn` -> `DugCardsLost` -> `TurnEnded` -> `TurnSkipped` -> `TurnStarted`
 #[rustfmt::skip]
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Event {
     /// The card dug from an excavation pile.
     CardDrawn { card: CardView, pile: ExcavationPileNumber },
+    /// The player use one of its dog to protect himself from a cursed skeleton.
     DogUsed { player: PlayerId, dog: CardView, skeleton: CardView },
     /// Cards lost before behind collected.
     DugCardsLost { player: PlayerId, cards: Vec<CardView> },
@@ -301,8 +300,6 @@ pub enum Event {
     /// Card given by player A from player B.
     CardGiven { from: PlayerId, to: PlayerId, card: CardView },
     /// The player obtained a card from an excavation pile.
-    // To indicate which card the player took with "Carte au Trésor".
-    // Maybe "CardCollected" is better, but it is really close to "CardsCollected".
     CardTaken { player: PlayerId, card: CardView, pile: ExcavationPileNumber },
     /// Which excavation pile has been destroyed.
     PileDestroyed(ExcavationPileNumber),
@@ -316,6 +313,8 @@ pub enum Event {
     TurnSkipped(PlayerId),
     /// This player turn begins.
     TurnStarted(PlayerId),
+    /// The is no more cards drawable, results in the end of the game.
+    NoMoreCards,
     /// The game is over and will not accept `Action` anymore.
     GameEnded,
 }

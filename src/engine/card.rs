@@ -1,8 +1,12 @@
+use std::{
+    fmt::Display,
+    hash::Hash, //
+};
+
 use serde::{
     Deserialize,
     Serialize, //
 };
-use std::hash::Hash;
 
 static CARDS_METADATA: &[CardMetadata] = &include!(concat!(env!("OUT_DIR"), "/card_metadata.rs"));
 
@@ -66,6 +70,42 @@ pub enum CardType {
     Collect(Collect),
     /// Resolve its effect when calculating the points.
     EndOfGame(EndOfGame),
+}
+impl Display for CardType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{self:?}")
+    }
+}
+impl CardType {
+    /// All card types.
+    pub const ALL: &[CardType] = &[
+        CardType::Treasure(Treasure::Mud),
+        CardType::Treasure(Treasure::FerrymansGold),
+        CardType::Treasure(Treasure::WeddingRing),
+        CardType::Treasure(Treasure::TreasureChest),
+        CardType::Treasure(Treasure::LeprechaunGold),
+        CardType::Treasure(Treasure::ArkOfTheCovenant),
+        CardType::Plunder(Plunder::CursedSkeleton),
+        CardType::Plunder(Plunder::RadioactiveWaste),
+        CardType::Plunder(Plunder::Worm),
+        CardType::Plunder(Plunder::CursedHeritage),
+        CardType::Plunder(Plunder::SleepingGravedigger),
+        CardType::Collect(Collect::LoyalDog(LoyalDog::GoldenRetriever)),
+        CardType::Collect(Collect::LoyalDog(LoyalDog::JackRusselTerrier)),
+        CardType::Collect(Collect::LoyalDog(LoyalDog::GermanShepherd)),
+        CardType::Collect(Collect::PirateCutlass),
+        CardType::Collect(Collect::PirateHat),
+        CardType::Collect(Collect::Sewer),
+        CardType::Collect(Collect::TreasureMap),
+        CardType::Collect(Collect::LichKingsCrown),
+        CardType::Collect(Collect::DrugStash),
+        CardType::Collect(Collect::AntipersonnelMine),
+        CardType::EndOfGame(EndOfGame::LotteryTicket),
+        CardType::EndOfGame(EndOfGame::SkwirmzWormGod),
+        CardType::EndOfGame(EndOfGame::WeddingDress),
+        CardType::EndOfGame(EndOfGame::OldMurraysMilk),
+        CardType::EndOfGame(EndOfGame::GrannyGruppoGingerCookie),
+    ];
 }
 
 #[derive(Debug)]
