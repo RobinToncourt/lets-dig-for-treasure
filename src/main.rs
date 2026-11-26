@@ -1,9 +1,8 @@
-#![allow(dead_code, unused, clippy::cast_lossless)] // TODO: remove.
+#![allow(dead_code, clippy::cast_lossless)] // TODO: remove.
 
+mod components;
 mod engine;
 mod net;
-mod update;
-mod view;
 
 use std::fmt::Display;
 
@@ -14,13 +13,9 @@ use log::{
     info, //
 };
 
-use crate::view::{
-    card_sprite::CardSprite,
-    sprite::{
-        CARD_BACK,
-        CARDS_SPRITES, //
-    },
-    text_input::TextInput,
+use crate::components::{
+    sprite_list::SpriteList,
+    utils::text_input::TextInput, //
 };
 
 fn main() {
@@ -28,13 +23,6 @@ fn main() {
     wasm_logger::init(wasm_logger::Config::default());
     info!("Let's Dig for Treasure!");
     yew::Renderer::<App>::new().render();
-}
-
-enum MainMenuMessage {
-    SetNickname(AttrValue),
-    SetLobbyName(AttrValue),
-    SetSignalingServerUrl(AttrValue),
-    Join,
 }
 
 #[derive(Debug)]
@@ -69,6 +57,40 @@ impl Display for MainMenuMessage {
     }
 }
 
+enum MainMenuMessage {
+    SetNickname(AttrValue),
+    SetLobbyName(AttrValue),
+    SetSignalingServerUrl(AttrValue),
+    Join,
+}
+
+#[derive(Debug, Default)]
+enum State {
+    MainMenu(MainMenu),
+    WaitingForSignalingServer,
+    Lobby,
+    Game,
+    GameOver,
+    #[default]
+    SpriteList,
+}
+impl Display for State {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                Self::MainMenu(_) => "App::MainMenu",
+                Self::WaitingForSignalingServer => "App::WaitingForSignalingServer",
+                Self::Lobby => "App::Lobby",
+                Self::Game => "App::Game",
+                Self::GameOver => "App::GameOver",
+                Self::SpriteList => "App::SpriteList",
+            }
+        )
+    }
+}
+
 enum Message {
     MainMenu(MainMenuMessage),
 }
@@ -90,30 +112,10 @@ impl Display for Message {
     }
 }
 
-#[derive(Debug, Default)]
-enum State {
-    MainMenu(MainMenu),
-    #[default]
-    SpriteList,
-}
-impl Display for State {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "{}",
-            match self {
-                Self::MainMenu(_) => "App::MainMenu",
-                Self::SpriteList => "App::SpriteList",
-            }
-        )
-    }
-}
-
 #[derive(Default)]
 struct App {
     state: State,
 }
-
 impl Component for App {
     type Message = Message;
     type Properties = ();
@@ -196,23 +198,9 @@ impl Component for App {
                 }
             }
             State::SpriteList => html! {
-                <div class="sprites-grid">
-                    for cs in CARDS_SPRITES {
-                        <CardSprite
-                            x={cs.sprite().position.x}
-                            y={cs.sprite().position.y}
-                            w={cs.sprite().dimension.w}
-                            h={cs.sprite().dimension.h}
-                        />
-                    }
-                    <CardSprite
-                        x={CARD_BACK.position.x}
-                        y={CARD_BACK.position.y}
-                        w={CARD_BACK.dimension.w}
-                        h={CARD_BACK.dimension.h}
-                    />
-                </div>
+                <SpriteList />
             },
+            _ => todo!(),
         }
     }
 }

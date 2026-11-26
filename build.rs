@@ -71,21 +71,21 @@ struct Sprite {
 }
 
 #[derive(Deserialize)]
-pub struct CardSprite {
+pub struct CardTypeSprite {
     card_type: Value,
     sprite: Sprite,
 }
 
 fn card_sprites() {
     println!("cargo:rerun-if-changed=cards_metadata.json");
-    let sprites: Vec<CardSprite> =
+    let sprites: Vec<CardTypeSprite> =
         serde_json::from_str(&fs::read_to_string("assets/sprites.json").unwrap()).unwrap();
 
     let mut out = String::from("[\n");
     for s in &sprites {
         writeln!(
             out,
-            "    CardSprite {{ card_type: {}, sprite: Sprite {{ position: Position {{ x: {}, y:{} }}, dimension: Dimension {{ w: {}, h: {} }} }} }},",
+            "    CardTypeSprite {{ card_type: {}, sprite: Sprite {{ position: Position {{ x: {}, y:{} }}, dimension: Dimension {{ w: {}, h: {} }} }} }},",
             path("CardType", &s.card_type), s.sprite.position.x, s.sprite.position.y, s.sprite.dimension.w, s.sprite.dimension.h,
         ).unwrap();
     }
