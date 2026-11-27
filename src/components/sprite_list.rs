@@ -3,11 +3,11 @@ use yew::prelude::*;
 use web_sys::HtmlSelectElement;
 
 use crate::{
-    components::utils::{
-        card_sprite::CardSprite,
-        sprite::get_sprite, //
+    components::utils::card_sprite::CardSprite,
+    engine::{
+        CARDS_METADATA,
+        CardType, //
     },
-    engine::CardType,
 };
 
 pub enum SpriteListMessage {
@@ -53,32 +53,25 @@ impl Component for SpriteList {
                     { "Select an element" }
                 </option>
 
-                {for CardType::ALL.iter().enumerate().map(|(index, card_type)| {
+                {for CARDS_METADATA.iter().enumerate().map(|(index, cm)| {
                     html! {
                         <option
                             value={index.to_string()}
-                            selected={self.selected.as_ref() == Some(card_type)}
+                            selected={self.selected.as_ref() == Some(&cm.card_type())}
                         >
-                            { card_type.to_string() }
+                            { cm.name() }
                         </option>
                     }
                 })}
             </select>
 
-            {self.selected.and_then(|card| {
-                let sprite = get_sprite(card);
-
-                sprite.map(|sprite| {
-                    html! {
-                        <CardSprite
-                            x={sprite.position.x}
-                            y={sprite.position.y}
-                            w={sprite.dimension.w}
-                            h={sprite.dimension.h}
-                        />
-                    }
-                })
-            })}
+            {self.selected.and_then(|card_type|
+                html! { <CardSprite
+                    card_type={card_type}
+                    target_w=220.0
+                    target_h=308.0
+                /> }.into()
+            )}
 
             </>
         }
