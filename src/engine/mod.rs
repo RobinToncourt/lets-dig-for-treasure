@@ -6,6 +6,7 @@ pub mod game;
  */
 
 pub use card::{
+    CARDS_METADATA,
     CardId,
     CardType,
     CardView,
@@ -422,4 +423,7 @@ trait LetsDigForTreasure {
 
     /// The result of the game if it is over.
     fn game_result(&self) -> Option<GameOver>;
+
+    /// Returns the score of the players, it is calculated from the game current state.
+    fn scores(&self) -> Vec<Score>;
 }

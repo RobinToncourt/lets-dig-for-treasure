@@ -7,8 +7,10 @@ use serde::{
     Deserialize,
     Serialize, //
 };
+use yew::html::ImplicitClone;
 
-static CARDS_METADATA: &[CardMetadata] = &include!(concat!(env!("OUT_DIR"), "/card_metadata.rs"));
+pub static CARDS_METADATA: &[CardMetadata] =
+    &include!(concat!(env!("OUT_DIR"), "/card_metadata.rs"));
 
 #[allow(clippy::enum_variant_names)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -71,9 +73,9 @@ pub enum CardType {
     /// Resolve its effect when calculating the points.
     EndOfGame(EndOfGame),
 }
-impl Display for CardType {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{self:?}")
+impl ImplicitClone for CardType {
+    fn implicit_clone(&self) -> Self {
+        *self
     }
 }
 impl CardType {
